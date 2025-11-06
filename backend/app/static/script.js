@@ -29,7 +29,8 @@ function ensureSessionOrRedirect() {
 // ==== Chamadas de API - ADAPTADO PARA JWT HEADER ====
 async function apiGet(path) {
   const { token } = getSession(); 
-  const finalPath = path.startsWith('/') ? path : `${BASE_URL}${path}`; 
+  // CORREÇÃO: A linha abaixo foi alterada para sempre usar o BASE_URL
+  const finalPath = `${BASE_URL}${path}`; 
   
   const r = await fetch(finalPath, { 
     headers: { 
@@ -49,7 +50,8 @@ async function apiGet(path) {
 
 async function apiPost(path, body) {
   const { token } = getSession();
-  const finalPath = path.startsWith('/') ? path : `${BASE_URL}${path}`; 
+  // CORREÇÃO: A linha abaixo foi alterada para sempre usar o BASE_URL
+  const finalPath = `${BASE_URL}${path}`; 
   
   const r = await fetch(finalPath, {
     method: "POST",
@@ -123,6 +125,7 @@ function initLogin() {
     const password = q("password").value.trim();
     try {
       // ⚠️ CHAMA A ROTA DE LOGIN CORRETA: /api/v1/login (path=/login)
+      // Nota: A chamada abaixo (com /login) agora funciona por causa da nossa correção na func apiPost
       const data = await apiPost("/login", { username, password }); 
       
       // Salva o token, o username (email) e o papel.
@@ -168,6 +171,7 @@ function wireRequiredInputs() {
 
 async function loadSystemsAndModules() {
   // Rota real: /api/v1/sistemas
+  // Nota: A chamada abaixo (com /sistemas) agora funciona por causa da nossa correção na func apiGet
   const systems = await apiGet("/sistemas");
   const sysSel = q("t_system"); const modSel = q("t_module");
   if (!sysSel || !modSel) return;
