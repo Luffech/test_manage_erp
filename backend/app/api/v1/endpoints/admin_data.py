@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.core.security import get_password_hash
 from app.models import Usuario, NivelAcesso
-from app.models.nivel_acesso import NivelAcessoEnum
+from app.core.enums import NivelAcessoEnum
 from .sistemas import get_db_session
 
 router = APIRouter()

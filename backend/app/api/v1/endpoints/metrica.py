@@ -1,5 +1,6 @@
 # backend/app/api/v1/endpoints/metrica.py
 from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession # <-- LINHA ADICIONADA
 from app.api.v1.deps import require_admin
 from app.services.metrica_service import MetricaService
 from .sistemas import get_db_session

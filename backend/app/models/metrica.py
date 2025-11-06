@@ -4,9 +4,14 @@ from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
+from app.core.enums import TipoMetricaEnum # <-- IMPORTAR O ENUM PYTHON
 
-# O nome do ENUM DEVE ser o mesmo definido em db/init.sql
-tipo_metrica_enum = ENUM('cobertura', 'eficiencia', 'defeitos', 'qualidade', 'produtividade', name='tipo_metrica_enum', create_type=False)
+# SQLAlchemy usará o Enum Python para criar seu tipo
+tipo_metrica_enum = ENUM(
+    TipoMetricaEnum, 
+    name='tipo_metrica_enum', 
+    create_type=True
+)
 
 class Metrica(Base):
     __tablename__ = "metricas"
@@ -14,7 +19,7 @@ class Metrica(Base):
     id = Column(Integer, primary_key=True, index=True)
     projeto_id = Column(Integer, ForeignKey("projetos.id"), nullable=False)
     ciclo_teste_id = Column(Integer, ForeignKey("ciclos_teste.id"))
-    tipo_metrica = Column(tipo_metrica_enum, nullable=False)
+    tipo_metrica = Column(tipo_metrica_enum, nullable=False) # <-- Usa o tipo
     casos_reprovados = Column(Integer, nullable=False)
     casos_executados = Column(Integer, nullable=False)
     casos_aprovados = Column(Integer, nullable=False)

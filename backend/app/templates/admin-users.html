@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <title>Admin • Testadores</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body id="page-admin-users">
   
   <aside class="sidebar">
     <div class="brand-wrap">
-      <img src="{{ url_for('static', filename='logoge.png') }}" alt="GE" class="brand-logo">
+      <img src="/static/logoge.png" alt="GE" class="brand-logo">
       <div class="brand">Test Manager SAP</div>
     </div>
     <nav>
@@ -89,7 +89,7 @@
 
   </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="/static/script.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", initAdminUsers);
   </script>

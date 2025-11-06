@@ -4,9 +4,14 @@ from sqlalchemy.dialects.postgresql import JSONB, ENUM
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
+from app.core.enums import StatusProjetoEnum # <-- IMPORTAR O ENUM PYTHON
 
-# O nome do ENUM DEVE ser o mesmo definido em db/init.sql
-status_projeto_enum = ENUM('ativo', 'pausado', 'finalizado', name='status_projeto_enum', create_type=False)
+# SQLAlchemy usará o Enum Python para criar seu tipo
+status_projeto_enum = ENUM(
+    StatusProjetoEnum, 
+    name='status_projeto_enum', 
+    create_type=True
+)
 
 class Projeto(Base):
     __tablename__ = "projetos"
@@ -17,7 +22,8 @@ class Projeto(Base):
     sistema_id = Column(Integer, ForeignKey("sistemas.id"), nullable=False)
     responsavel_id = Column(Integer, ForeignKey("usuarios.id"))
     descricao = Column(Text)
-    status = Column(status_projeto_enum, default='ativo')
+     # CORREÇÃO: Usar o Enum Python para o valor padrão
+    status = Column(status_projeto_enum, default=StatusProjetoEnum.ativo)
     metricas = Column(JSONB) # metricas em formato JSONB
     created_at = Column(TIMESTAMP(timezone=True), server_default=func.now())
     updated_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), onupdate=func.now())

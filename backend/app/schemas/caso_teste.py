@@ -2,7 +2,7 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 from typing import Optional, Sequence
-from app.models.caso_teste import prioridade_enum # Assumindo que este ENUM está acessível
+from app.core.enums import PrioridadeCasoTesteEnum # <-- IMPORTA O ENUM PYTHON
 
 # ----------------- PROJETO (Simplificado para Resposta) -----------------
 class ProjetoResponse(BaseModel):
@@ -15,7 +15,7 @@ class ProjetoResponse(BaseModel):
 
 # ----------------- CASO TESTE -----------------
 class CasoTesteBase(BaseModel):
-    # Foreign keys (temporariamente omitindo ciclo_teste_id para o CRUD inicial)
+    # Foreign keys
     projeto_id: int
 
     # Attributes
@@ -23,7 +23,8 @@ class CasoTesteBase(BaseModel):
     descricao: Optional[str] = None
     passos: Optional[str] = None
     criterios_aceitacao: Optional[str] = None
-    prioridade: prioridade_enum = prioridade_enum.media
+    # CORREÇÃO: Usa o Enum Python e seu valor padrão
+    prioridade: PrioridadeCasoTesteEnum = PrioridadeCasoTesteEnum.media
 
 class CasoTesteCreate(CasoTesteBase):
     pass
@@ -33,15 +34,14 @@ class CasoTesteUpdate(BaseModel):
     descricao: Optional[str] = None
     passos: Optional[str] = None
     criterios_aceitacao: Optional[str] = None
-    prioridade: Optional[prioridade_enum] = None
-    ativo: Optional[bool] = None # Adicionando status ativo para o frontend
+    prioridade: Optional[PrioridadeCasoTesteEnum] = None
+    ativo: Optional[bool] = None 
 
 class CasoTesteResponse(CasoTesteBase):
     id: int
     created_at: datetime
     updated_at: datetime
     
-    # Adicionar nome do projeto e status
     projeto_nome: str
     ativo: bool
     
@@ -53,7 +53,7 @@ class RegistroTentativaTesteResponse(BaseModel):
     caso_teste_id: int
     usuario_id: int
     numero_tentativa: int
-    resultado: bool # True (success), False (failure)
+    resultado: bool 
     evidencias: Optional[str] = None
     data_execucao: datetime
     

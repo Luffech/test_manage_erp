@@ -15,8 +15,9 @@ class CasoTesteRepository:
         """ Cria um novo Caso de Teste. """
         db_obj = CasoTeste(
             **caso_teste_data.model_dump(),
-            ativo=True, # Novo campo 'ativo'
-            ciclo_teste_id=1 # MOCK: Assumindo ciclo_teste_id=1 como default, já que é NOT NULL no modelo
+            ativo=True,
+            # A LINHA ABAIXO FOI REMOVIDA:
+            # ciclo_teste_id=1 
         )
         self.db.add(db_obj)
         await self.db.commit()
@@ -25,7 +26,7 @@ class CasoTesteRepository:
 
     async def get_all_casos_teste(self) -> Sequence[CasoTeste]:
         """ Retorna todos os Casos de Teste. """
-        query = select(CasoTeste).order_by(CasoTeste.id) # Usamos ID para ordem padrão
+        query = select(CasoTeste).order_by(CasoTest.id) 
         result = await self.db.execute(query)
         return result.scalars().all() 
 

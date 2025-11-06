@@ -8,7 +8,7 @@ from jose import JWTError, jwt
 from app.core.config import settings
 from app.core.security import SECRET_KEY, ALGORITHM
 from app.models.usuario import Usuario
-from app.models.nivel_acesso import NivelAcessoEnum
+from app.core.enums import NivelAcessoEnum
 
 from .endpoints.sistemas import get_db_session # Reutiliza a dependência da sessão
 
@@ -56,7 +56,7 @@ async def get_current_active_user(
 
 def require_admin(current_user: Usuario = Depends(get_current_active_user)) -> Usuario:
     """ Exige que o usuário logado tenha o papel de 'admin'. """
-    if current_user.nivel_acesso.nome.value != NivelAcessoEnum.admin.value:
+    if current_user.nivel_acesso.nome != NivelAcessoEnum.admin:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Acesso restrito a administradores.")
     return current_user
 

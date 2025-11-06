@@ -1,6 +1,7 @@
 # backend/app/api/v1/endpoints/tester.py
 from fastapi import APIRouter, Depends, status, HTTPException
 from typing import Sequence
+from sqlalchemy.ext.asyncio import AsyncSession # <-- LINHA ADICIONADA
 from app.api.v1.deps import require_tester, get_current_active_user
 from app.models import Usuario, CasoTeste
 from app.schemas import CasoTesteResponse
